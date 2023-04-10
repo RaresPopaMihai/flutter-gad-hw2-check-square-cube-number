@@ -26,7 +26,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final _numberController = TextEditingController();
   String errorTextValue = '';
 
@@ -41,48 +40,44 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           const Text(
             'Please input a number to see if it is square or triangular.',
-            style: TextStyle(
-              fontSize: 25
-            ),
+            style: TextStyle(fontSize: 25),
           ),
           TextField(
             controller: _numberController,
-            keyboardType: const TextInputType.numberWithOptions( decimal: true),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
             decoration: InputDecoration(
-              errorText: errorTextValue.isEmpty ? null : errorTextValue
-            ),
+                errorText: errorTextValue.isEmpty ? null : errorTextValue),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed:() {
+        onPressed: () {
           setState(() {
-          int? number;
-          String inputNumber = _numberController.text;
-          number = int.tryParse(inputNumber);
-          if(number == null){
-            errorTextValue = "Please enter a valid number!";
-          }else{
-            if(!errorTextValue.isEmpty){
-              errorTextValue = "";
+            int? number;
+            String inputNumber = _numberController.text;
+            number = int.tryParse(inputNumber);
+            if (number == null) {
+              errorTextValue = "Please enter a valid number!";
+            } else {
+              if (!errorTextValue.isEmpty) {
+                errorTextValue = "";
+              }
+              String message = "";
+              if (isSquare(number) && isTriangle(number)) {
+                message = "Number ${number} is both SQUARE and TRIANGULAR.";
+              } else if (isSquare(number)) {
+                message = "Number ${number} is SQUARE.";
+              } else if (isTriangle(number)) {
+                message = "Number ${number} is TRIANGULAR.";
+              } else {
+                message = "Number ${number} is neither SQUARE or TRIANGULAR.";
+              }
+              popDialog(number, message);
             }
-            String message = "";
-            if(isSquare(number)&& isTriangle(number)){
-              message = "Number ${number} is both SQUARE and TRIANGULAR.";
-            }else if(isSquare(number)){
-              message = "Number ${number} is SQUARE.";
-            }else if(isTriangle(number)){
-              message = "Number ${number} is TRIANGULAR.";
-            }
-            else{
-              message = "Number ${number} is neither SQUARE or TRIANGULAR.";
-            }
-            popDialog(number, message);
-          }
-        });
+          });
         },
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -91,21 +86,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  bool isSquare(int value){
-    return sqrt(value)%1 == 0;
+  bool isSquare(int value) {
+    return sqrt(value) % 1 == 0;
   }
 
-  bool isTriangle(int value){
+  bool isTriangle(int value) {
     int cubeRoot = pow(value, 1 / 3).round();
     return cubeRoot * cubeRoot * cubeRoot == value;
   }
 
   Future popDialog(int number, String message) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(number.toString()),
-        content: Text(message),
-      ),
-  );
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(number.toString()),
+          content: Text(message),
+        ),
+      );
 }
-
