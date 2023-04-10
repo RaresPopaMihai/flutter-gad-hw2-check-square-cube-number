@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _numberController = TextEditingController();
-  String errorTextValue = '';
+  String _errorTextValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -49,35 +49,33 @@ class _HomePageState extends State<HomePage> {
               FilteringTextInputFormatter.digitsOnly,
             ],
             decoration: InputDecoration(
-                errorText: errorTextValue.isEmpty ? null : errorTextValue),
+                errorText: _errorTextValue.isEmpty ? null : _errorTextValue),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            int? number;
-            String inputNumber = _numberController.text;
-            number = int.tryParse(inputNumber);
-            if (number == null) {
-              errorTextValue = "Please enter a valid number!";
-            } else {
-              if (!errorTextValue.isEmpty) {
-                errorTextValue = "";
-              }
-              String message = "";
-              if (isSquare(number) && isTriangle(number)) {
-                message = "Number ${number} is both SQUARE and TRIANGULAR.";
-              } else if (isSquare(number)) {
-                message = "Number ${number} is SQUARE.";
-              } else if (isTriangle(number)) {
-                message = "Number ${number} is TRIANGULAR.";
-              } else {
-                message = "Number ${number} is neither SQUARE or TRIANGULAR.";
-              }
-              popDialog(number, message);
+          int? number;
+          String inputNumber = _numberController.text;
+          number = int.tryParse(inputNumber);
+          if (number == null) {
+            _errorTextValue = "Please enter a valid number!";
+          } else {
+            if (!_errorTextValue.isEmpty) {
+              _errorTextValue = "";
             }
-          });
+            String message = "";
+            if (isSquare(number) && isTriangle(number)) {
+              message = "Number ${number} is both SQUARE and TRIANGULAR.";
+            } else if (isSquare(number)) {
+              message = "Number ${number} is SQUARE.";
+            } else if (isTriangle(number)) {
+              message = "Number ${number} is TRIANGULAR.";
+            } else {
+              message = "Number ${number} is neither SQUARE or TRIANGULAR.";
+            }
+            popDialog(number, message);
+          }
         },
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
