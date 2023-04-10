@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           ),
           TextField(
             controller: _numberController,
-            keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+            keyboardType: const TextInputType.numberWithOptions( decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
